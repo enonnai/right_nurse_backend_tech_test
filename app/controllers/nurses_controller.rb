@@ -1,5 +1,14 @@
 class NursesController < ApplicationController
 
+  def show
+    @nurse = Nurse.find_by(id: params[:id])
+    if @nurse
+      render json: @nurse.to_json
+    else
+      render status: 404
+    end
+  end
+
   def create
     @nurse = Nurse.new(nurse_params)
     if !@nurse.save

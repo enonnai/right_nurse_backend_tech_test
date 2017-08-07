@@ -112,5 +112,22 @@ RSpec.describe NursesController do
       end
     end
 
+    describe "#show" do
+      it "displays a single nurse object" do
+        role = Role.create(name: "Test role")
+        nurse = Nurse.create(email: "test@example.com", first_name: "John", last_name: "Doe", phone_number: "074-0000-0000", verified: false, sign_in_count: 0, role_id: role.id)
+        get :show, params:{ id: nurse.id }
+        nurse_obj = JSON.parse(response.body)
+        expect(nurse_obj["id"]).to eq 1
+      end
+
+      context "when a single nurse object id does not exist" do
+        it "returns a 404 response status" do
+          get :show, params:{ id: 10 }
+          expect(response.status).to eq 404
+        end
+      end
+    end
+
   end
 end
