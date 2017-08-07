@@ -87,6 +87,29 @@ RSpec.describe NursesController do
           expect(nurse.email).to eq "test@example.com"
         end
       end
+
+      context "when a nurse object id is invalid" do
+        it "returns a 404 response status" do
+          delete :update, params:{ id: 10, nurse: {first_name: "Bill" }}
+          expect(response.status).to eq 404
+        end
+      end
+    end
+
+    describe "#delete" do
+      it "deletes a nurse object" do
+        role = Role.create(name: "Test role")
+        nurse = Nurse.create(email: "test@example.com", first_name: "John", last_name: "Doe", phone_number: "074-0000-0000", verified: false, sign_in_count: 0, role_id: role.id)
+        delete :destroy, params:{ id: nurse.id }
+        expect(Nurse.count).to eq 0
+      end
+
+      context "when a nurse object id is invalid" do
+        it "returns a 404 response status" do
+          delete :destroy, params:{ id: 10 }
+          expect(response.status).to eq 404
+        end
+      end
     end
 
   end

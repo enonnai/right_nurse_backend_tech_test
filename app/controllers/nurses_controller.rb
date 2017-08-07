@@ -8,9 +8,21 @@ class NursesController < ApplicationController
   end
 
   def update
-    @nurse = Nurse.find(params[:id])
-    if !@nurse.update_attributes(update_nurse_params)
-      render status: 400, json: {errors: @nurse.errors.full_messages}
+    @nurse = Nurse.find_by(id: params[:id])
+    if @nurse
+      if !@nurse.update_attributes(update_nurse_params)
+        render status: 400, json: {errors: @nurse.errors.full_messages}
+      end
+    else
+      render status: 404
+    end
+  end
+
+  def destroy
+    if Nurse.find_by(id: params[:id]) == nil
+      render status: 404
+    else
+      Nurse.find(params[:id]).destroy
     end
   end
 
