@@ -124,12 +124,14 @@ RSpec.describe NursesController do
     end
 
     describe "#index" do
-      it "displays all nurse objects" do
+      it "returns all the nurse objects" do
         nurse = create_nurse
         nurse2 = create_nurse("test3@example.com")
         get :index
         nurse_obj = JSON.parse(response.body)
-        expect(nurse_obj[0]["id"]).to eq 1
+        expect(nurse_obj.length).to eq 2
+        expect(nurse_obj[0]["email"]).to eq "test@example.com"
+        expect(nurse_obj[1]["email"]).to eq "test3@example.com"
       end
     end
   end
