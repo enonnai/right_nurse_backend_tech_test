@@ -1,5 +1,10 @@
 class NursesController < ApplicationController
 
+  def index
+    @nurses = Nurse.all
+    render json: @nurses.to_json
+  end
+
   def show
     @nurse = Nurse.find_by(id: params[:id])
     if @nurse

@@ -129,5 +129,15 @@ RSpec.describe NursesController do
       end
     end
 
+    describe "#index" do
+      it "displays all nurse objects" do
+        role = Role.create(name: "Test role")
+        nurse = Nurse.create(email: "test@example.com", first_name: "John", last_name: "Doe", phone_number: "074-0000-0000", verified: false, sign_in_count: 0, role_id: role.id)
+        nurse_2 = Nurse.create(email: "test3@example.com", first_name: "Mary", last_name: "Brown", phone_number: "074-0001-0001", verified: false, sign_in_count: 0, role_id: role.id)
+        get :index
+        nurse_obj = JSON.parse(response.body)
+        expect(nurse_obj[0]["id"]).to eq 1
+      end
+    end
   end
 end
